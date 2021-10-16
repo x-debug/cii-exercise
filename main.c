@@ -1,12 +1,19 @@
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 #include <time.h>
 #include "util.h"
 #include "atom.h"
 #include "mem.h"
 #include "debug.h"
+#include "list.h"
 
 #define STR_LEN 1000000
+#define DEBUG_LIST
+
+void apply(void **x, void *cl) {
+    printf("value: %s\r\n", (char *) *x);
+}
 
 //(1):寻找Hashtable hash计算函数 http://www.cse.yorku.ca/~oz/hash.html
 //(2):Atom_new中不使用strcmp原因 strcmp只能比较字符串，但是atom实现也可以不是字符串
@@ -17,7 +24,8 @@
 //(7):实现Atom_free可以释放单个原子，并且实现Atom_reset可以释放所有原子
 //(8):实现Atom_vload(const char* str, ...)批量初始化原子，实现Atom_aload(const char* strs[])数组初始化原子
 //(9):实现Atom_add(const char* str, int len)浅拷贝str,并且调整free,reset
-int main(int argc, const char* argv[]) {
+int main(int argc, const char *argv[]) {
+#ifdef DEBUG_ATOM
     char **strBuffer;
     AtomMgr atom;
 
@@ -57,5 +65,67 @@ int main(int argc, const char* argv[]) {
     Atom_free(atom, tips);
     FREE(strBuffer);
     Atom_reset(atom);
+#endif
+
+#ifdef DEBUG_LIST
+    int length;
+
+    ListMgr listMgr = List_init();
+    List_push(listMgr, "hello1");
+    List_push(listMgr, "world1");
+    List_push(listMgr, "apple1");
+    length = List_length(listMgr);
+    printf("listMgr: %d\r\n", length);
+
+    ListMgr listMgr1 = List_list("hello2", "world2", "people2", NULL);
+    length = List_length(listMgr1);
+    printf("listMgr1: %d\r\n", length);
+
+    listMgr = List_append(listMgr, listMgr1);
+    length = List_length(listMgr);
+    printf("after List_append, listMgr: %d\r\n", length);
+
+    List_map(listMgr, apply, NULL);
+    listMgr = List_reverse(listMgr);
+    printf("after List_reverse: \r\n");
+    List_map(listMgr, apply, NULL);
+
+    printf("after List_copy: \r\n");
+    ListMgr listMgr2 = List_copy(listMgr);
+    List_map(listMgr2, apply, NULL);
+
+    char *popValue;
+    List_pop(listMgr2, (void **) &popValue);
+    printf("pop value: %s\r\n", popValue);
+    List_map(listMgr2, apply, NULL);
+
+    char **arrayValue;
+    char *p = NULL;
+
+    arrayValue = (char **) List_toArray(listMgr2, NULL);
+    printf("after List_toArray: \r\n");
+    int i = 0;
+    p = arrayValue[i];
+    while (p) {
+        printf("value: %s\r\n", p);
+        i++;
+        p = arrayValue[i];
+    }
+
+    List_pop(listMgr, (void **) &popValue);
+    List_pop(listMgr, (void **) &popValue);
+    List_pop(listMgr, (void **) &popValue);
+    List_pop(listMgr, (void **) &popValue);
+    List_pop(listMgr, (void **) &popValue);
+    List_pop(listMgr, (void **) &popValue);
+    printf("length of listMgr: %d\r\n", List_length(listMgr));
+    assert(listMgr->head == NULL);
+    assert(listMgr->tail == NULL);
+
+    List_free(listMgr);
+    List_free(listMgr1);
+    List_free(listMgr2);
+    FREE(arrayValue);
+#endif
     return 0;
 }
