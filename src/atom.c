@@ -19,7 +19,7 @@ static char rcsid[] = "$Id: H:/drh/idioms/book/RCS/atom.doc,v 1.10 1997/02/21 19
 struct atom {
     struct atom *link;
     unsigned char freed;
-    bool copied;//shallow = 1, set ref to ptr, else duplicate string to str
+    bool copied;//shallow = 1, set ref node ptr, else duplicate string node str
     const char *ptr;
     int len;
     char str[];//内存分配时，存储的具体内容在其管理结构后面分配，此处指向具体的字符串内容

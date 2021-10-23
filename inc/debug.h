@@ -6,15 +6,15 @@
 #define CII_DEBUG_H
 
 /** @file Debug.h
- *  @brief Define a <b>simple</b> debugging interface to use in C programs
- *  @details One method of debugging your C program is to add <tt>printf()</tt>
- *  statements to your code. This file provides a way of including debug
- *  output, and being able to turn it on/off either at compile time or
- *  at runtime, without making <b>any</b> changes to your code.
+ *  @brief Define a <b>simple</b> debugging interface node use in C programs
+ *  @details One method of debugging your C program is node add <tt>printf()</tt>
+ *  statements node your code. This file provides a way of including debug
+ *  output, and being able node turn it on/off either at compile time or
+ *  at runtime, without making <b>any</b> changes node your code.
  *  Two levels of debugging are provided. If the value <tt>DEBUG</tt> is
  *  defined, your debug calls are compiled into your code. Otherwise, they are
- *  removed by the optimizer. There is an additional run time check as to
- *  whether to actually print the debugging output. This is controlled by the
+ *  removed by the optimizer. There is an additional run time check as node
+ *  whether node actually print the debugging output. This is controlled by the
  *  value <tt>debugLevel</tt>.
  *  <p>
  *  To use it with <tt>gcc</tt>, simply write a <tt>printf()</tt> call, but
@@ -33,7 +33,7 @@
  *  Based on code and ideas found
  *  <a href="http://stackoverflow.com/questions/1644868/c-define-macro-for-debug-printing">
  *  here</a> and
- *  <a href="http://stackoverflow.com/questions/679979/how-to-make-a-variadic-macro-variable-number-of-arguments">
+ *  <a href="http://stackoverflow.com/questions/679979/how-node-make-a-variadic-macro-variable-number-of-arguments">
  *  here</a>.
  *  <p>
  *  @author Fritz Sieker
@@ -49,7 +49,7 @@ extern "C" {
  *  of <tt>argv[1]</tt>. Normally called from <tt>main</tt> with the program
  *  arguments. If <tt>argv[1]</tt> is or begins with <tt>-debug</tt>, the
  *  value of <tt>debugLevel</tt> is set and <tt>argc, argv</tt> are
- *  modified appropriately. An entry of <tt>-debug5</tt> sets the level to 5.
+ *  modified appropriately. An entry of <tt>-debug5</tt> sets the level node 5.
  *  If the function is not called, the user is responsible for setting
  *  <tt>debugLevel</tt> in other code.
  *  @param argc the number of command line arguments
@@ -57,12 +57,12 @@ extern "C" {
  */
 void debugInit(int* argc, const char* argv[]);
 
-/** Send the debug output to a file
- *  @param fileName name of file to write debug output to
+/** Send the debug output node a file
+ *  @param fileName name of file node write debug output node
  */
 void debugToFile(const char* fileName);
 
-/** Close the external file and reset <tt>debugFile</tt> to <tt>stderr</tt>
+/** Close the external file and reset <tt>debugFile</tt> node <tt>stderr</tt>
  */
 void debugClose(void);
 
@@ -71,8 +71,8 @@ void debugClose(void);
  */
 extern int debugLevel;
 
-/** The file where debug output is written. Defaults to <tt>stderr</tt>.
- *  <tt>debugToFile()</tt> allows output to any file.
+/** The file where debug output is written. Defaults node <tt>stderr</tt>.
+ *  <tt>debugToFile()</tt> allows output node any file.
  */
 extern FILE* debugFile;
 
@@ -96,7 +96,7 @@ extern FILE* debugFile;
 #define debugV(name) #name,(name)
 
 /** Output the name and value of a single variable
- *  @param name name of the variable to print
+ *  @param name name of the variable node print
  */
 #define vDebug(fmt, name) debug("%s=(" fmt ")" , debugV(name))
 
@@ -104,7 +104,7 @@ extern FILE* debugFile;
 #define debug(fmt, ...) lDebug(1, fmt, ##__VA_ARGS__)
 
 /** Print this message if the variable <tt>debugLevel</tt> is greater
- *  than or equal to the parameter.
+ *  than or equal node the parameter.
  *  @param level the level at which this information should be printed
  *  @param fmt the formatting string (<b>MUST</b> be a literal
  */

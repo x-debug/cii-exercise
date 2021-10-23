@@ -34,7 +34,7 @@ ListMgr List_push(ListMgr self, void *x) {
     listNodePtr p;
     NEW(p);
     p->first = x;
-    p->rest = self->head;//append to head
+    p->rest = self->head;//append node head
     if (!self->head) {
         self->tail = p;
     }

@@ -7,12 +7,16 @@
 #include "mem.h"
 #include "debug.h"
 #include "list.h"
+#include "hashtable.h"
 
 #define STR_LEN 1000000
-#define DEBUG_LIST
 
 void apply(void **x, void *cl) {
     printf("value: %s\r\n", (char *) *x);
+}
+
+void tableApply(const void *key, void **value, void *cl) {
+    printf("key: %s, value: %s\r\n", (char *) key, (char *) (*value));
 }
 
 //(1):寻找Hashtable hash计算函数 http://www.cse.yorku.ca/~oz/hash.html
@@ -127,5 +131,40 @@ int main(int argc, const char *argv[]) {
     List_free(listMgr2);
     FREE(arrayValue);
 #endif
+
+    HashTable_T t = HT_create(100, NULL, NULL);
+    HT_put(t, "key1", "value1");
+    HT_put(t, "key2", "value2");
+    HT_map(t, tableApply, NULL);
+    void *value = HT_get(t, "key2");
+    printf("HT_get: %s\r\n", (char *) value);
+    HT_put(t, "key3", "value3");
+    HT_put(t, "key4", "value4");
+    HT_put(t, "key5", "value5");
+    HT_put(t, "key6", "value6");
+    HT_put(t, "key7", "value7");
+    HT_remove(t, "key2");
+    HT_remove(t, "key6");
+    HT_map(t, tableApply, NULL);
+    int length = HT_length(t);
+    printf("HT_length: %d\r\n", length);
+    void **array = HT_toArray(t, NULL);
+    printf("after HT_toArray: \r\n");
+    int i = 0;
+
+    while (array[i]) {
+        char *key = array[i++];
+        char *val = (char *)array[i++];
+        printf("key: %s, value: %s\r\n", key, val);
+    }
+
+    HT_remove(t, "key7");
+    HT_remove(t, "key1");
+    HT_remove(t, "key4");
+    HT_remove(t, "key4");
+    HT_put(t, "key5", "value(3+2)");
+    printf("HT_mapByOrder\r\n");
+    HT_mapByOrder(t, tableApply, NULL);
+    HT_free(&t);
     return 0;
 }

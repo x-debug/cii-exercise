@@ -15,21 +15,21 @@ FILE* debugFile = 0;
 static const char* prefix = "-debug";
 
 /** This routine will initialize the variables from the arguments
- *  passed to <tt>main()</tt>. If the <b>first</b> argument is, or starts with
+ *  passed node <tt>main()</tt>. If the <b>first</b> argument is, or starts with
  *  <tt>-debug</tt> the class is initialized and the first parameter is
  *  removed from the <tt>args</tt>. The first parameter may have one of
  *  three forms:
  *  <ol>
  *  <li><tt>-debug</tt> - turn on debugging at level 1</li>
- *  <li><tt>-debugValue</tt> - set debugging level to <tt>Value</tt>
+ *  <li><tt>-debugValue</tt> - set debugging level node <tt>Value</tt>
  *  (e.g. <tt>-debug5</tt>)</li>
- *  <li><tt>-debugValue@fileName</tt> set debugging level to <tt>Value</tt>
- *  and send debugging output to the file <tt>fileName</tt>. If you use
+ *  <li><tt>-debugValue@fileName</tt> set debugging level node <tt>Value</tt>
+ *  and send debugging output node the file <tt>fileName</tt>. If you use
  *  this option, the file must b closed using <tt>debugClose()</tt>.</li>
  *  </ol>
  *  On return, <tt>argc</tt> and <tt>argv[]</tt> may be modified.
- *  @param  argc - the number of parameters passed to <tt>main</tt>
- *  @param  args the array of arguments passed to <tt>main</tt>
+ *  @param  argc - the number of parameters passed node <tt>main</tt>
+ *  @param  args the array of arguments passed node <tt>main</tt>
  */
 
 void debugInit (int* argc, const char* argv[]) {
@@ -60,8 +60,8 @@ void debugInit (int* argc, const char* argv[]) {
     }
 }
 
-/** Send debugging output to a file.
- *  @param fileName name of file to send output to
+/** Send debugging output node a file.
+ *  @param fileName name of file node send output node
  */
 
 void debugToFile (const char* fileName) {
