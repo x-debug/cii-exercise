@@ -8,11 +8,16 @@
 #include "debug.h"
 #include "list.h"
 #include "hashtable.h"
+#include "hset.h"
 
 #define STR_LEN 1000000
 
 void apply(void **x, void *cl) {
     printf("value: %s\r\n", (char *) *x);
+}
+
+void SetApply(const void *x, void *cl) {
+    printf("value: %s\r\n", (char *) x);
 }
 
 void tableApply(const void *key, void **value, void *cl) {
@@ -132,6 +137,7 @@ int main(int argc, const char *argv[]) {
     FREE(arrayValue);
 #endif
 
+#ifdef DEBUG_TABLE
     HashTable_T t = HT_create(100, NULL, NULL);
     HT_put(t, "key1", "value1");
     HT_put(t, "key2", "value2");
@@ -166,5 +172,20 @@ int main(int argc, const char *argv[]) {
     printf("HT_mapByOrder\r\n");
     HT_mapByOrder(t, tableApply, NULL);
     HT_free(&t);
+#endif
+
+    HSET_T t1 = HSet_new(100, NULL, NULL);
+    HSet_put(t1, "A");
+    HSet_put(t1, "B");
+
+    HSET_T t2 = HSet_new(100, NULL, NULL);
+    HSet_put(t2, "B");
+    HSet_put(t2, "C");
+
+    HSET_T set = HSet_minus(t1, t2);
+    HSet_map(set, SetApply, NULL);
+    HSet_free(&t1);
+    HSet_free(&t2);
+    HSet_free(&set);
     return 0;
 }
