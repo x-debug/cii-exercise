@@ -1,2 +1,2 @@
 # cii-exercise
-c interfaces and implementations exercise
+it's my exercise solution for c interfaces and implementations
